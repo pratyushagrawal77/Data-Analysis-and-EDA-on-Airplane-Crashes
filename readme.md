@@ -1,52 +1,100 @@
-### Components of the Chatbot App with Interconnected Backend
+### Software Requirements for the Chatbot App  
 
-This chatbot app integrates **web** and **mobile development**, showcasing the interaction between an Android frontend and a locally hosted ML chatbot backend. Here's how the system works:
-
----
-
-#### 1. **Backend: Chatbot Model and API**
-- **Chatbot ML Model**:  
-  The backend is built on a **Machine Learning chatbot model**, hosted using a **Flask API**. This backend processes user input, runs it through the ML model, and returns responses.  
-
-- **API Hosting**:  
-  The Flask application runs locally, serving the chatbot API at a specific address (e.g., `http://127.0.0.1:5000`). The Android app communicates with this API via HTTP requests, enabling real-time data exchange between the mobile app and the backend server.  
-
-- **Integration with Android**:  
-  The backend is interconnected with the Android app such that when the user presses a button, the app launches the chatbot interface. This is achieved by embedding an **Intent** in the Android app that opens the web browser and navigates to the locally hosted Flask server.  
+This project integrates an Android frontend with a Streamlit-hosted chatbot backend, showcasing both web and mobile development. Below are the detailed software requirements for both **Streamlit** and **Android Studio** environments.  
 
 ---
 
-#### 2. **Frontend: Android Application**
-- **Chatbot Interface**:  
-  The frontend is an Android app, built using Android Studio. It provides users with a clean, intuitive interface to interact with the chatbot.  
-  - **UI Components**: Includes buttons, text views, and navigation elements designed using Material Design principles.  
-  - **Interactive Buttons**: A button on the app triggers an event to open the Flask-hosted chatbot interface in the browser directly.  
+### **1. Requirements for Streamlit Backend**  
 
-- **Button to Chatbot**:  
-  When the button is pressed:
-  1. The app generates an **Intent** to open the device's default web browser.
-  2. The browser navigates to the Flask server URL, where the chatbot interface is hosted.  
-  This seamless redirection allows users to move from the mobile app to the chatbot interface in a web environment.
+#### **System Requirements**
+- **Operating System**: Windows 10/11, macOS, or Linux  
+- **RAM**: Minimum 4 GB (8 GB recommended for ML tasks)  
+- **Python Version**: 3.8 or above (Streamlit is compatible with Python 3.8–3.12)  
 
-- **Backend Communication**:  
-  Alternatively, for in-app communication, the app sends user input to the Flask backend via HTTP POST requests using libraries like Retrofit or OkHttp. Responses are displayed within the app’s chat interface, providing a unified experience.
+#### **Software Dependencies**
+1. **Python Libraries**:  
+   - **Streamlit**: To host the chatbot interface  
+     ```bash
+     pip install streamlit
+     ```
+   - **Machine Learning Libraries**:  
+     - `scikit-learn`, `transformers`, or others used in the chatbot model  
+       ```bash
+       pip install scikit-learn transformers
+       ```
+   - **API Communication (Optional)**:  
+     - `requests` for handling HTTP requests between the frontend and backend  
+       ```bash
+       pip install requests
+       ```
+   - **Additional Libraries**: Include any libraries required for preprocessing, NLP, or specific ML models.
+
+2. **Hosting and Networking**:  
+   - **ngrok** (if hosting locally but want to share a public URL for app testing)  
+     ```bash
+     pip install pyngrok
+     ```  
+     Alternatively, configure local Wi-Fi to access the backend from the Android app using the local IP.
+
+#### **Streamlit App Structure**  
+- **`app.py`**: Main Streamlit script for chatbot UI.  
+- **Pre-trained ML Model**: Ensure the chatbot model is saved and loaded correctly.  
+- **Port Configuration**: Host on a standard port (e.g., `http://localhost:8501`) to enable seamless integration with Android Studio.
 
 ---
 
-#### 3. **Interconnection and Navigation**
-- **Localhost Accessibility**:  
-  The Flask backend, running locally, is made accessible to the Android app by configuring the network (e.g., using `http://192.168.x.x:5000` for local Wi-Fi). This ensures the backend can handle requests from both the web and the Android app.
+### **2. Requirements for Android Studio Frontend**  
 
-- **Button Functionality**:  
-  The app’s button enables direct navigation to the chatbot interface. This functionality is achieved using the following Android mechanisms:
-  - **Intent to Open Browser**: The button triggers an explicit intent to open a web browser with the backend’s URL.  
-  - **In-App WebView (Optional)**: Alternatively, the app can load the chatbot interface within a WebView, keeping the user within the app.
+#### **System Requirements**
+- **Operating System**:  
+  - Windows 10/11 (64-bit)  
+  - macOS (10.14 or above)  
+  - Linux (GNOME or KDE desktop)  
+
+- **RAM**: Minimum 8 GB (16 GB recommended for large projects).  
+- **Processor**: Intel i5 or AMD equivalent (i7/i9 recommended).  
+- **Disk Space**: Minimum 4 GB for Android Studio + 2 GB for Emulator system image.  
+
+#### **Software Dependencies**
+1. **Android Studio Version**:  
+   - Download the latest version from the [official website](https://developer.android.com/studio).  
+
+2. **SDK Tools**:  
+   - Install the latest Android SDK version and SDK tools (via SDK Manager).  
+     - SDK Platforms: Select versions compatible with the app (e.g., Android 12/13).  
+     - SDK Tools: Include Android Emulator, Build Tools, and Platform Tools.  
+
+3. **Build Tools**:  
+   - **Gradle**: Use the recommended version from Android Studio.  
+   - **Dependencies for Network Requests**: Add Retrofit or OkHttp for backend communication.  
+     Example Gradle dependencies:
+     ```gradle
+     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+     ```
+
+4. **Emulator**:  
+   - AVD (Android Virtual Device) for testing the app locally.  
+
+5. **Java Version**:  
+   - JDK 11 or above (required for Android Studio).  
 
 ---
 
-### Summary
-This interconnected system bridges **web** and **mobile development** by integrating:
-- A **locally hosted Flask backend** running the chatbot ML model.
-- An **Android frontend** with navigation to the chatbot interface via a button.  
+### **Interconnection Setup**
+- Ensure the Android app can connect to the Streamlit backend:  
+  - For local testing: Use the same network and replace the Streamlit `localhost` URL with your machine's local IP address (e.g., `http://192.168.x.x:8501`).  
+  - For remote testing: Use `ngrok` to provide a public URL for the Streamlit backend.  
 
-This seamless integration highlights efficient backend utilization and enhances user accessibility, making the app functional across multiple platforms. Cool project, keep acing it! 🚀
+---
+
+### **3. Overall Dependencies**
+| **Environment** | **Dependencies**                  |
+|------------------|----------------------------------|
+| **Backend**      | Python, Streamlit, ML libraries |
+| **Frontend**     | Android Studio, SDK, Gradle     |
+| **Network**      | HTTP libraries (Retrofit, OkHttp, requests) |
+
+---
+
+With these software requirements in place, you can run the chatbot seamlessly on both the **Streamlit web interface** and the **Android mobile app**. Best of luck, keep the momentum going! 🌟
